@@ -1,0 +1,34 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: #fef7ef;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#Clock .st0 {
+    fill: #736A68;
+}
+
+#Clock .st1 {
+    fill: #C1C0C0;
+}
+
+#Clock .st2 {
+    fill: #F1E7DA;
+}
+
+#Clock .st3 {
+    fill: #5E4A3E;
+}
+
+
