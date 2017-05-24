@@ -2,3 +2,4 @@
 node_modules
 /src/js/script.js.map
 /src/js/script.js
+*.map
