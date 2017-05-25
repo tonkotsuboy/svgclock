@@ -181,7 +181,7 @@ var ParticleLayer = (function () {
         this.frame++;
         requestAnimationFrame(function () { return _this.tick(); });
         if (this.frame % 2 && DeviceInfo_1.default.lowSpecMode) {
-            return;
+            // return;
         }
         this.update();
     };
