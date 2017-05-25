@@ -14,10 +14,10 @@ export default class ParticleLayer {
   private mouseX:number = 0;
   private mouseY:number = 0;
 
-  public constructor() {
+  public constructor(svgField:SVGSVGElement) {
     this.view = document.createElementNS(SVGNameSpace.SVG, "g");
 
-    this._particleEmitter = new ParticleEmitter();  // パーティクル発生装置のインスタンスを作成
+    this._particleEmitter = new ParticleEmitter(svgField);  // パーティクル発生装置のインスタンスを作成
     this.view.appendChild(this._particleEmitter.view);
 
     window.addEventListener(EventName.MOUSE_DOWN, (event) => this.mouseDownHandler(event));
@@ -54,6 +54,8 @@ export default class ParticleLayer {
     // マウスの座標
     this.mouseX = event.clientX;
     this.mouseY = event.clientY;
+
+    // DebugController.instance.trace(`this.mouseX : ${this.mouseX }`, `this.mouseY : ${this.mouseY}`);
   }
 
   public update():void {

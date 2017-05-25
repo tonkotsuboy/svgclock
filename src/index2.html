@@ -9,9 +9,47 @@
   <script src="js/script2.js"></script>
 </head>
 <body>
-<svg id="svgField" width="100%" height="100%" viewBox="0 0 960 540">
+<svg id="svgField" width="100%" height="100%" viewBox="0 0 960 540" preserveAspectRatio="xMidYMin slice">
   <defs>
-    <circle id="myCircle" cx="0" cy="0" r="20" fill="#06f"></circle>
+    <style>.cls-1, .cls-2 {
+      fill: #e50012;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cls-1, .cls-2, .cls-3, .cls-4 {
+      stroke: #231815;
+    }
+
+    .cls-1 {
+      stroke-width: 4.45px;
+    }
+
+    .cls-2, .cls-3 {
+      stroke-width: 2.97px;
+    }
+
+    .cls-3 {
+      fill: #6f0000;
+    }
+
+    .cls-4 {
+      fill: none;
+      stroke-width: 1.57px;
+    }
+
+    .cls-5 {
+      fill: #231815;
+    }</style>
+    <g id="myCircle" data-name="">
+      <path class="cls-1" d="M33 62C6 36 2 72 33 70c-14 7 2 18 10 4-4 12 10 11 10 2-1 10 9 11 10-1 0 13 13 10 10-1 2 12 13 11 9-1 8 15 17 1 7-3 30 0 30-33-2-8 0-7-62-11-54 0z"/>
+      <path class="cls-1" d="M34 62c-14-10-16-33-4-47s50-15 63 0 12 34-6 48"/>
+      <path class="cls-2" d="M58 44H45c-1 4-2 13 1 15h10"/>
+      <ellipse class="cls-3" cx="45" cy="51" rx="5" ry="8"/>
+      <path class="cls-4" d="M6 56a3 3 0 0 0 0 5M2 55c-2 2-2 6 0 8M117 60a3 3 0 0 0 0-5M121 61c2-2 2-6 0-8"/>
+      <circle class="cls-5" cx="36" cy="36" r="5"/>
+      <circle id="path" class="cls-5" cx="83" cy="36" r="5"/>
+    </g>
   </defs>
 </svg>
 </body>

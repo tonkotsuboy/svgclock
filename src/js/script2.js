@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -104,7 +104,23 @@ var SVGNameSpace;
 
 
 /***/ }),
-/* 2 */,
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Point = (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Point;
+}());
+exports.default = Point;
+
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -113,18 +129,18 @@ var SVGNameSpace;
 Object.defineProperty(exports, "__esModule", { value: true });
 var EventName_1 = __webpack_require__(0);
 var SVGNameSpace_1 = __webpack_require__(1);
-var ParticleEmitter_1 = __webpack_require__(8);
+var ParticleEmitter_1 = __webpack_require__(6);
 /**
  * メインのレイヤー
  */
 var ParticleLayer = (function () {
-    function ParticleLayer() {
+    function ParticleLayer(svgField) {
         var _this = this;
         this._tickCount = 0;
         this.mouseX = 0;
         this.mouseY = 0;
         this.view = document.createElementNS(SVGNameSpace_1.SVGNameSpace.SVG, "g");
-        this._particleEmitter = new ParticleEmitter_1.default(); // パーティクル発生装置のインスタンスを作成
+        this._particleEmitter = new ParticleEmitter_1.default(svgField); // パーティクル発生装置のインスタンスを作成
         this.view.appendChild(this._particleEmitter.view);
         window.addEventListener(EventName_1.EventName.MOUSE_DOWN, function (event) { return _this.mouseDownHandler(event); });
         window.addEventListener(EventName_1.EventName.MOUSE_MOVE, function (event) { return _this.mouseMoveHandler(event); });
@@ -155,6 +171,7 @@ var ParticleLayer = (function () {
         // マウスの座標
         this.mouseX = event.clientX;
         this.mouseY = event.clientY;
+        // DebugController.instance.trace(`this.mouseX : ${this.mouseX }`, `this.mouseY : ${this.mouseY}`);
     };
     ParticleLayer.prototype.update = function () {
         // パーティクル発生装置の座標を更新
@@ -172,9 +189,7 @@ exports.default = ParticleLayer;
 
 
 /***/ }),
-/* 4 */,
-/* 5 */,
-/* 6 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -183,12 +198,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var EventName_1 = __webpack_require__(0);
 var ParticleLayer_1 = __webpack_require__(3);
 var Main2 = (function () {
-    // メインのレイヤー
     function Main2() {
-        this._svgField = document.getElementById("svgField");
+        var svgField = document.getElementById("svgField");
         // メインのレイヤーを配置
-        this._particleLayer = new ParticleLayer_1.default();
-        this._svgField.appendChild(this._particleLayer.view);
+        var svgPoint = svgField.createSVGPoint();
+        var particleLayer = new ParticleLayer_1.default(svgField);
+        svgField.appendChild(particleLayer.view);
     }
     return Main2;
 }());
@@ -196,7 +211,7 @@ window.addEventListener(EventName_1.EventName.DOM_CONTENT_LOADED, function () { 
 
 
 /***/ }),
-/* 7 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -244,10 +259,10 @@ var Particle = (function () {
     Particle.prototype.init = function (emitX, emitY, parentVX, parentVY) {
         this.x = emitX;
         this.y = emitY;
-        this._life = 200 + Math.random() * 30;
+        this._life = 100 + Math.random() * 30;
         this._count = 0;
-        this.vx = parentVX + (Math.random() - 0.5) * 10;
-        this.vy = parentVY - 8 - Math.random() * 10;
+        this.vx = parentVX + (Math.random() - 0.5) * 4;
+        this.vy = parentVY + 1 + Math.random() * 2;
         this.vr = (Math.random() - 0.5) * 5;
         this.isDead = false;
         // this.rotation = 50 * Math.PI * (Math.random() - 0.5);
@@ -268,7 +283,7 @@ var Particle = (function () {
         this._count++;
         if (this._count <= this._life) {
             this.x += this.vx;
-            this.vy += 0.6;
+            this.vy -= 0.3;
             this.y += this.vy;
             // this.rotation += this.vr;
             // 死にそうになったら点滅を開始
@@ -288,23 +303,27 @@ exports.default = Particle;
 
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var SVGNameSpace_1 = __webpack_require__(1);
-var Particle_1 = __webpack_require__(7);
+var Particle_1 = __webpack_require__(5);
+var Point_1 = __webpack_require__(2);
 /**
  * パーティクル発生装置
  */
 var ParticleEmitter = (function () {
-    function ParticleEmitter() {
+    function ParticleEmitter(svgElement) {
         // アニメーション中のパーティクルを格納する配列
         this._animationParticles = [];
         // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
         this._particlePool = [];
+        this._svgElement = svgElement;
+        // SVG上の点を取得
+        this._svgPoint = svgElement.createSVGPoint();
         this.view = document.createElementNS(SVGNameSpace_1.SVGNameSpace.SVG, "g");
         this._emitX = 0;
         this._emitY = 0;
@@ -314,10 +333,11 @@ var ParticleEmitter = (function () {
     /*
      * MainLayerのtickイベント毎に実行される処理
      * */
-    ParticleEmitter.prototype.update = function (goalX, goalY) {
+    ParticleEmitter.prototype.update = function (mouseX, mouseY) {
+        var goal = this.getEmitPointFromMouse(mouseX, mouseY);
         // 発生装置はgoalに徐々に近づいていく。
-        var dx = goalX - this._emitX;
-        var dy = goalY - this._emitY;
+        var dx = goal.x - this._emitX;
+        var dy = goal.y - this._emitY;
         var d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)); // 斜め方向の移動距離
         var rad = Math.atan2(dy, dx); // 移動角度
         this._vx = Math.cos(rad) * d * 0.1; // 速度の更新
@@ -326,6 +346,13 @@ var ParticleEmitter = (function () {
         this._emitY = this._emitY + this._vy;
         // アニメーション中のパーティクルの状態を更新
         this.updateParticles();
+    };
+    ParticleEmitter.prototype.getEmitPointFromMouse = function (mouseX, mouseY) {
+        // SVG上の点を取得
+        this._svgPoint.x = mouseX - 50;
+        this._svgPoint.y = mouseY - 50;
+        var goalPoint = this._svgPoint.matrixTransform(this._svgElement.getScreenCTM().inverse());
+        return new Point_1.default(goalPoint.x, goalPoint.y);
     };
     /**
      *パーティクルを発生させる
@@ -341,18 +368,24 @@ var ParticleEmitter = (function () {
      * パーティクルのアニメーション
      */
     ParticleEmitter.prototype.updateParticles = function () {
-        var windowWidth = window.innerWidth;
-        var windowHeight = window.innerHeight;
+        // if (!this._svgElement || !this._svgElement.viewport)
+        // {
+        //   return;
+        // }
+        //
+        // console.log(this._svgElement.viewport)
+        var right = 960;
+        var bottom = 540;
         for (var i = 0; i < this._animationParticles.length; i++) {
             var particle = this._animationParticles[i];
             if (!particle.isDead) {
-                if (particle.y >= windowHeight - 50) {
+                if (particle.y >= bottom) {
                     particle.vy *= -0.5;
-                    particle.y = windowHeight - 50;
+                    particle.y = bottom;
                 }
-                if (particle.x >= windowWidth) {
+                if (particle.x >= right) {
                     particle.vx *= -0.4;
-                    particle.x = windowWidth;
+                    particle.x = right;
                 }
                 else if (particle.x <= 0) {
                     particle.vx *= -0.4;

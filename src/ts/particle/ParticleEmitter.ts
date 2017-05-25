@@ -1,5 +1,6 @@
 import {SVGNameSpace} from "../svgnamespace/SVGNameSpace";
 import Particle from "./Particle";
+import Point from "../point/Point";
 
 /**
  * パーティクル発生装置
@@ -18,9 +19,15 @@ export default class ParticleEmitter {
   // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
   private _particlePool:Particle[] = [];
 
-  private _browserNum:number;
+  private _svgElement:SVGSVGElement;
+  private _svgPoint:SVGPoint;
 
-  public constructor() {
+  public constructor(svgElement:SVGSVGElement) {
+    this._svgElement = svgElement;
+
+    // SVG上の点を取得
+    this._svgPoint = svgElement.createSVGPoint();
+
     this.view = document.createElementNS(SVGNameSpace.SVG, "g");
 
     this._emitX = 0;
@@ -32,10 +39,12 @@ export default class ParticleEmitter {
   /*
    * MainLayerのtickイベント毎に実行される処理
    * */
-  public update(goalX:number, goalY:number) {
+  public update(mouseX:number, mouseY:number) {
+    const goal:Point = this.getEmitPointFromMouse(mouseX, mouseY)
+
     // 発生装置はgoalに徐々に近づいていく。
-    let dx:number = goalX - this._emitX;
-    let dy:number = goalY - this._emitY;
+    let dx:number = goal.x - this._emitX;
+    let dy:number = goal.y - this._emitY;
 
     let d:number = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));  // 斜め方向の移動距離
     let rad:number = Math.atan2(dy, dx);    // 移動角度
@@ -48,11 +57,18 @@ export default class ParticleEmitter {
     this.updateParticles();
   }
 
+  private getEmitPointFromMouse(mouseX:number, mouseY:number):Point {
+    // SVG上の点を取得
+    this._svgPoint.x = mouseX - 50;
+    this._svgPoint.y = mouseY - 50;
+    const goalPoint:SVGPoint = this._svgPoint.matrixTransform(this._svgElement.getScreenCTM().inverse());
+    return new Point(goalPoint.x, goalPoint.y);
+  }
+
   /**
    *パーティクルを発生させる
    */
   public emitParticle():void {
-
     let particle:Particle = this.getParticle();
     particle.init(this._emitX, this._emitY, this._vx, this._vy);
 
@@ -65,20 +81,27 @@ export default class ParticleEmitter {
    * パーティクルのアニメーション
    */
   private updateParticles():void {
-    let windowWidth:number = window.innerWidth;
-    let windowHeight:number = window.innerHeight;
+    // if (!this._svgElement || !this._svgElement.viewport)
+    // {
+    //   return;
+    // }
+    //
+    // console.log(this._svgElement.viewport)
+
+    const right = 960;
+    const bottom = 540;
 
     for (let i:number = 0; i < this._animationParticles.length; i++) {
       let particle:Particle = this._animationParticles[i];
       if (!particle.isDead) {
-        if (particle.y >= windowHeight - 50) {
+        if (particle.y >= bottom) {
           particle.vy *= -0.5;
-          particle.y = windowHeight - 50;
+          particle.y = bottom;
         }
 
-        if (particle.x >= windowWidth) {
+        if (particle.x >= right) {
           particle.vx *= -0.4;
-          particle.x = windowWidth;
+          particle.x = right;
         } else if (particle.x <= 0) {
           particle.vx *= -0.4;
           particle.x = 0;

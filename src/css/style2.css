@@ -6,7 +6,8 @@ html, body {
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    cursor: pointer;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
 }

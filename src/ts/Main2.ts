@@ -2,15 +2,12 @@ import {EventName} from "./eventname/EventName";
 import ParticleLayer from "./particle/ParticleLayer";
 
 class Main2 {
-  private _svgField:HTMLElement;
-  private _particleLayer:ParticleLayer;
-  // メインのレイヤー
-
   constructor() {
-    this._svgField = document.getElementById("svgField");
+    const svgField = <SVGSVGElement><any> document.getElementById("svgField");
     // メインのレイヤーを配置
-    this._particleLayer = new ParticleLayer();
-    this._svgField.appendChild(this._particleLayer.view);
+    const svgPoint = svgField.createSVGPoint();
+    const particleLayer = new ParticleLayer(svgField);
+    svgField.appendChild(particleLayer.view);
   }
 }
 

@@ -54,10 +54,10 @@ export default class Particle {
   public init(emitX:number, emitY:number, parentVX:number, parentVY:number):void {
     this.x = emitX;
     this.y = emitY;
-    this._life = 200 + Math.random() * 30;
+    this._life = 100 + Math.random() * 30;
     this._count = 0;
-    this.vx = parentVX + (Math.random() - 0.5) * 10;
-    this.vy = parentVY - 8 - Math.random() * 10;
+    this.vx = parentVX + (Math.random() - 0.5) * 4;
+    this.vy = parentVY + 1 + Math.random() * 2;
     this.vr = (Math.random() - 0.5) * 5;
 
     this.isDead = false;
@@ -72,6 +72,7 @@ export default class Particle {
 
   }
 
+
   /*
    * パーティクルの時間経過処理。
    * _countがパーティクルの年齢。
@@ -82,7 +83,7 @@ export default class Particle {
     this._count++;
     if (this._count <= this._life) {
       this.x += this.vx;
-      this.vy += 0.6;
+      this.vy -= 0.3;
       this.y += this.vy;
       // this.rotation += this.vr;
 
