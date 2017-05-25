@@ -22,6 +22,8 @@ export default class ParticleEmitter {
   private _svgElement:SVGSVGElement;
   private _svgPoint:SVGPoint;
 
+  private _particleCount:number = 0;
+
   public constructor(svgElement:SVGSVGElement) {
     this._svgElement = svgElement;
 
@@ -69,12 +71,24 @@ export default class ParticleEmitter {
    *パーティクルを発生させる
    */
   public emitParticle():void {
+    this._particleCount++;
+
+    if (this._particleCount % 2 != 0)
+    {
+      return;
+    }
+    
     let particle:Particle = this.getParticle();
     particle.init(this._emitX, this._emitY, this._vx, this._vy);
 
     this.view.appendChild(particle.view);
     // アニメーション中のパーティクルとして設定
     this._animationParticles.push(particle);
+
+    if (this._particleCount >= 100000) {
+      this._particleCount = 0;
+    }
+
   }
 
   /**

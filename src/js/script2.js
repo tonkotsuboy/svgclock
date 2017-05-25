@@ -321,6 +321,7 @@ var ParticleEmitter = (function () {
         this._animationParticles = [];
         // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
         this._particlePool = [];
+        this._particleCount = 0;
         this._svgElement = svgElement;
         // SVG上の点を取得
         this._svgPoint = svgElement.createSVGPoint();
@@ -358,11 +359,18 @@ var ParticleEmitter = (function () {
      *パーティクルを発生させる
      */
     ParticleEmitter.prototype.emitParticle = function () {
+        this._particleCount++;
+        if (this._particleCount % 2 != 0) {
+            return;
+        }
         var particle = this.getParticle();
         particle.init(this._emitX, this._emitY, this._vx, this._vy);
         this.view.appendChild(particle.view);
         // アニメーション中のパーティクルとして設定
         this._animationParticles.push(particle);
+        if (this._particleCount >= 100000) {
+            this._particleCount = 0;
+        }
     };
     /**
      * パーティクルのアニメーション
