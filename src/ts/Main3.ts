@@ -1,6 +1,5 @@
 import {EventName} from "./eventname/EventName";
 import SudaParticleEmitter from "./particle/SudaParticleEmitter";
-import SudaParticle from "./particle/SudaParticle";
 
 class Main3 {
   private sudaEmitter:SudaParticleEmitter;
@@ -10,16 +9,26 @@ class Main3 {
     this.sudaEmitter = new SudaParticleEmitter();
     svgField.appendChild(this.sudaEmitter.view);
 
-    this.render()
+    document.getElementById("syringe").addEventListener(EventName.CLICK, (event) => this.onFieldClick(event))
+
+    this.render();
   }
 
   private render() {
-    if (!this.sudaEmitter)
-    {
+    if (!this.sudaEmitter) {
       return;
     }
     this.sudaEmitter.update();
     requestAnimationFrame(() => this.render());
+  }
+
+  private onFieldClick(event:MouseEvent) {
+    if (!this.sudaEmitter) {
+      return;
+    }
+
+    this.sudaEmitter.increseSuda();
+
   }
 }
 

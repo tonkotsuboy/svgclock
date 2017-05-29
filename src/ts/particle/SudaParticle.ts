@@ -52,7 +52,6 @@ export default class SudaParticle {
     }
   }
 
-
   public constructor(linkId:string, linePath:SVGPathElement, startTime:number = 0) {
     this.view = document.createElementNS(SVGNameSpace.SVG, "use");
     this.view.setAttributeNS(SVGNameSpace.LINK, "href", linkId);

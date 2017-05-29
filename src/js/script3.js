@@ -78,6 +78,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var EventName;
 (function (EventName) {
+    EventName.CLICK = "click";
     EventName.RESIZE = "resize";
     EventName.DOM_CONTENT_LOADED = "DOMContentLoaded";
     EventName.MOUSE_DOWN = "mousedown";
@@ -125,9 +126,7 @@ var SudaParticleEmitter = (function () {
             return;
         }
         for (var i = 0; i < 1; i++) {
-            var particle = new SudaParticle_1.default("#suda", this.linePath, i * 30);
-            this.particles.push(particle);
-            this.view.appendChild(particle.view);
+            this.increseSuda(i);
         }
     }
     SudaParticleEmitter.prototype.update = function () {
@@ -138,6 +137,12 @@ var SudaParticleEmitter = (function () {
             var particle = _a[_i];
             particle.update();
         }
+    };
+    SudaParticleEmitter.prototype.increseSuda = function (startTime) {
+        if (startTime === void 0) { startTime = 0; }
+        var particle = new SudaParticle_1.default("#suda", this.linePath, startTime);
+        this.particles.push(particle);
+        this.view.appendChild(particle.view);
     };
     return SudaParticleEmitter;
 }());
@@ -157,9 +162,11 @@ var EventName_1 = __webpack_require__(0);
 var SudaParticleEmitter_1 = __webpack_require__(5);
 var Main3 = (function () {
     function Main3() {
+        var _this = this;
         var svgField = document.querySelector("#tonkotuField");
         this.sudaEmitter = new SudaParticleEmitter_1.default();
         svgField.appendChild(this.sudaEmitter.view);
+        document.getElementById("syringe").addEventListener(EventName_1.EventName.CLICK, function (event) { return _this.onFieldClick(event); });
         this.render();
     }
     Main3.prototype.render = function () {
@@ -169,6 +176,12 @@ var Main3 = (function () {
         }
         this.sudaEmitter.update();
         requestAnimationFrame(function () { return _this.render(); });
+    };
+    Main3.prototype.onFieldClick = function (event) {
+        if (!this.sudaEmitter) {
+            return;
+        }
+        this.sudaEmitter.increseSuda();
     };
     return Main3;
 }());
