@@ -12,17 +12,14 @@ export default class SudaParticleEmitter {
     this.particles = [];
 
     // メインのレイヤーを配置
-    this.linePath = <SVGPathElement><any> document.getElementById("linePath");
+    this.linePath = <SVGPathElement> <any> document.getElementById("linePath");
 
-    if (!this.linePath)
-    {
+    if (!this.linePath) {
       return;
     }
 
-    for (var i = 0; i < 1; i++) {
-      const particle = new SudaParticle("#suda", this.linePath, i * 30);
-      this.particles.push(particle);
-      this.view.appendChild(particle.view);
+    for (let i = 0; i < 1; i++) {
+      this.increseSuda(i);
     }
   }
 
@@ -34,5 +31,12 @@ export default class SudaParticleEmitter {
     for (let particle of this.particles) {
       particle.update();
     }
+  }
+
+  public increseSuda(startTime:number = 0) {
+    const particle = new SudaParticle("#suda", this.linePath, startTime);
+    this.particles.push(particle);
+    this.view.appendChild(particle.view);
+
   }
 }

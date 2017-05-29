@@ -10,3 +10,51 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+#syringe {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#syringe:hover {
+    fill: rgba(125, 125, 125, 1);
+}
+
+.a {
+    fill: #ff4957;
+}
+
+.b {
+    fill: #ffebeb;
+}
+
+.cls-2 {
+    fill: #ffebeb;
+}
+
+.cls-3 {
+    fill: none;
+}
+
+.tyu-1 {
+    fill: #bebebe;
+}
+
+.tyu-2 {
+    fill: #bee6fa;
+}
+
+.tyu-3 {
+    fill: #a0a0a0;
+}
+
+.tyu-4 {
+    fill: #1eaae1;
+}
+
+p {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+
+}
