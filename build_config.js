@@ -11,7 +11,8 @@ const TS_FOLDER = `${SRC_FOLDER}/ts`;
 /** TypeScriptファイルのエントリーファイル */
 const TS_ENTRY_FILES_NAME = {
   "script": "Main.ts",
-  "script2": "Main2.ts"
+  "script2": "Main2.ts",
+  "script3": "Main3.ts"
 };
 
 /** 変換後のJS格納フォルダ */
