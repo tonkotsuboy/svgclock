@@ -207,57 +207,21 @@ var SudaParticle = (function () {
         this.time = 0;
         this.view = document.createElementNS(SVGNameSpace_1.SVGNameSpace.SVG, "use");
         this.view.setAttributeNS(SVGNameSpace_1.SVGNameSpace.LINK, "href", linkId);
-        // this.view.setAttribute("fill", "#005fea");
         this.linePath = linePath;
         this.pathTotalLength = linePath.getTotalLength();
         this.time = startTime;
+        this.setSudaPosition(this.time);
     }
-    Object.defineProperty(SudaParticle.prototype, "x", {
-        get: function () {
-            return this._x;
-        },
-        set: function (value) {
-            this._x = value;
-            if (this.view) {
-                this.view.setAttribute("x", String(this._x - 12));
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SudaParticle.prototype, "y", {
-        get: function () {
-            return this._y;
-        },
-        set: function (value) {
-            this._y = value;
-            if (this.view) {
-                this.view.setAttribute("y", String(this._y - 12));
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SudaParticle.prototype, "rotate", {
-        get: function () {
-            return this._rotate;
-        },
-        set: function (value) {
-            this._rotate = value;
-            if (this.view) {
-                this.view.setAttribute("transform", "rotate(" + value + ")");
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
     SudaParticle.prototype.update = function () {
         this.time += 2;
         if (this.time >= this.pathTotalLength) {
             this.time = 0;
         }
-        var targetPoint = this.linePath.getPointAtLength(this.time);
-        var prevTime = this.time - 1;
+        this.setSudaPosition(this.time);
+    };
+    SudaParticle.prototype.setSudaPosition = function (targetTime) {
+        var targetPoint = this.linePath.getPointAtLength(targetTime);
+        var prevTime = targetTime - 1;
         if (prevTime < 0) {
             prevTime = this.pathTotalLength - 1;
         }
@@ -265,12 +229,7 @@ var SudaParticle = (function () {
         var vx = prevPoint.x - targetPoint.x;
         var vy = prevPoint.y - targetPoint.y;
         var angle = Math.atan2(vy, vx) * (180 / Math.PI) - 180;
-        //const angle = this.time * this.pathTotalLength / 360;
-        // this.x = targetPoint.x;
-        // this.y = targetPoint.y;
         this.view.setAttribute("transform", "translate(" + targetPoint.x + ", " + targetPoint.y + ") rotate(" + angle + ")");
-        //this.view.setAttribute("transform", `rotate(${angle})`);
-        // this.rotate = angle;
     };
     return SudaParticle;
 }());
