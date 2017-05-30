@@ -37,6 +37,5 @@ export default class SudaParticleEmitter {
     const particle = new SudaParticle("#suda", this.linePath, startTime);
     this.particles.push(particle);
     this.view.appendChild(particle.view);
-
   }
 }
