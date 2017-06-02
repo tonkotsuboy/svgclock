@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -202,7 +202,8 @@ exports.default = SudaParticle;
 /* 6 */,
 /* 7 */,
 /* 8 */,
-/* 9 */
+/* 9 */,
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -214,7 +215,7 @@ var Main3 = (function () {
     function Main3() {
         var _this = this;
         var svgField = document.querySelector("#tonkotuField");
-        this.sudaEmitter = new SudaParticleEmitter_1.default();
+        this.sudaEmitter = new SudaParticleEmitter_1.default(5);
         svgField.appendChild(this.sudaEmitter.view);
         document.getElementById("syringe").addEventListener(EventName_1.EventName.CLICK, function (event) { return _this.onFieldClick(event); });
         this.render();
@@ -240,4 +241,4 @@ window.addEventListener(EventName_1.EventName.DOM_CONTENT_LOADED, function () { 
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=script3.js.map
+//# sourceMappingURL=script4.js.map

@@ -12,7 +12,9 @@ const TS_FOLDER = `${SRC_FOLDER}/ts`;
 const TS_ENTRY_FILES_NAME = {
   "script": "Main.ts",
   "script2": "Main2.ts",
-  "script3": "Main3.ts"
+  "script3": "Main3.ts",
+  "script4": "Main4.ts",
+  "script5": "Main5.ts"
 };
 
 /** 変換後のJS格納フォルダ */

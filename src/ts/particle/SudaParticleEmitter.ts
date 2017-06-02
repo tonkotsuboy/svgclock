@@ -7,7 +7,11 @@ export default class SudaParticleEmitter {
   public view:SVGGElement;
   private linePath:SVGPathElement;
 
-  public constructor() {
+  private speed:number;
+
+
+  public constructor(speed:number = 2) {
+    this.speed = speed;
     this.view = document.createElementNS(SVGNameSpace.SVG, "g");
     this.particles = [];
 
@@ -34,7 +38,7 @@ export default class SudaParticleEmitter {
   }
 
   public increseSuda(startTime:number = 0) {
-    const particle = new SudaParticle("#suda", this.linePath, startTime);
+    const particle = new SudaParticle("#suda", this.linePath, startTime, this.speed);
     this.particles.push(particle);
     this.view.appendChild(particle.view);
   }

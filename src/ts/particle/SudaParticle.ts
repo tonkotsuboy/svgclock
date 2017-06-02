@@ -12,7 +12,10 @@ export default class SudaParticle {
 
   public time:number = 0;
 
-  public constructor(linkId:string, linePath:SVGPathElement, startTime:number = 0) {
+  private speed:number;
+
+  public constructor(linkId:string, linePath:SVGPathElement, startTime:number = 0, speed:number = 2) {
+    this.speed = speed;
     this.view = document.createElementNS(SVGNameSpace.SVG, "use");
     this.view.setAttributeNS(SVGNameSpace.LINK, "href", linkId);
     this.linePath = linePath;
@@ -22,7 +25,7 @@ export default class SudaParticle {
   }
 
   public update():void {
-    this.time += 2;
+    this.time += this.speed;
 
     if (this.time >= this.pathTotalLength) {
       this.time = 0;
