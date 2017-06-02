@@ -14,7 +14,8 @@ const TS_ENTRY_FILES_NAME = {
   "script2": "Main2.ts",
   "script3": "Main3.ts",
   "script4": "Main4.ts",
-  "script5": "Main5.ts"
+  "script5": "Main5.ts",
+  "script6": "Main6.ts"
 };
 
 /** 変換後のJS格納フォルダ */
