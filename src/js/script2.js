@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -78,6 +75,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var EventName;
 (function (EventName) {
+    EventName.CLICK = "click";
     EventName.RESIZE = "resize";
     EventName.DOM_CONTENT_LOADED = "DOMContentLoaded";
     EventName.MOUSE_DOWN = "mousedown";
@@ -110,7 +108,7 @@ var SVGNameSpace;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Point = (function () {
+var Point = /** @class */ (function () {
     function Point(x, y) {
         this.x = x;
         this.y = y;
@@ -121,7 +119,31 @@ exports.default = Point;
 
 
 /***/ }),
-/* 3 */
+/* 3 */,
+/* 4 */,
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventName_1 = __webpack_require__(0);
+var ParticleLayer_1 = __webpack_require__(6);
+var Main2 = /** @class */ (function () {
+    function Main2() {
+        var svgField = document.getElementById("svgField");
+        // メインのレイヤーを配置
+        var svgPoint = svgField.createSVGPoint();
+        var particleLayer = new ParticleLayer_1.default(svgField);
+        svgField.appendChild(particleLayer.view);
+    }
+    return Main2;
+}());
+window.addEventListener(EventName_1.EventName.DOM_CONTENT_LOADED, function () { return new Main2(); });
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -129,11 +151,11 @@ exports.default = Point;
 Object.defineProperty(exports, "__esModule", { value: true });
 var EventName_1 = __webpack_require__(0);
 var SVGNameSpace_1 = __webpack_require__(1);
-var ParticleEmitter_1 = __webpack_require__(6);
+var ParticleEmitter_1 = __webpack_require__(7);
 /**
  * メインのレイヤー
  */
-var ParticleLayer = (function () {
+var ParticleLayer = /** @class */ (function () {
     function ParticleLayer(svgField) {
         var _this = this;
         this._tickCount = 0;
@@ -189,133 +211,19 @@ exports.default = ParticleLayer;
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var EventName_1 = __webpack_require__(0);
-var ParticleLayer_1 = __webpack_require__(3);
-var Main2 = (function () {
-    function Main2() {
-        var svgField = document.getElementById("svgField");
-        // メインのレイヤーを配置
-        var svgPoint = svgField.createSVGPoint();
-        var particleLayer = new ParticleLayer_1.default(svgField);
-        svgField.appendChild(particleLayer.view);
-    }
-    return Main2;
-}());
-window.addEventListener(EventName_1.EventName.DOM_CONTENT_LOADED, function () { return new Main2(); });
-
-
-/***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var SVGNameSpace_1 = __webpack_require__(1);
-/**
- * パーティクルのクラス
- */
-var Particle = (function () {
-    function Particle() {
-        this.view = document.createElementNS(SVGNameSpace_1.SVGNameSpace.SVG, "use");
-        this.view.setAttributeNS(SVGNameSpace_1.SVGNameSpace.LINK, "href", "#myCircle");
-    }
-    Object.defineProperty(Particle.prototype, "x", {
-        get: function () {
-            return this._x;
-        },
-        set: function (value) {
-            this._x = value;
-            if (this.view) {
-                this.view.setAttribute("x", String(this._x));
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Particle.prototype, "y", {
-        get: function () {
-            return this._y;
-        },
-        set: function (value) {
-            this._y = value;
-            if (this.view) {
-                this.view.setAttribute("y", String(this._y));
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /*
-     * パーティクルの初期化
-     * @param parentVX, parentVY :親コンテナの速度。パーティクルの速度に影響を与える。
-     * */
-    Particle.prototype.init = function (emitX, emitY, parentVX, parentVY) {
-        this.x = emitX;
-        this.y = emitY;
-        this._life = 100 + Math.random() * 30;
-        this._count = 0;
-        this.vx = parentVX + (Math.random() - 0.5) * 4;
-        this.vy = parentVY + 1 + Math.random() * 2;
-        this.vr = (Math.random() - 0.5) * 5;
-        this.isDead = false;
-        // this.rotation = 50 * Math.PI * (Math.random() - 0.5);
-    };
-    Particle.prototype.setPosition = function (positionX, positionY) {
-        if (!this.view) {
-            return;
-        }
-        this.view.setAttribute("_y", String(positionY));
-    };
-    /*
-     * パーティクルの時間経過処理。
-     * _countがパーティクルの年齢。
-     * _lifeを超えたら死亡する。
-     *
-     * */
-    Particle.prototype.update = function () {
-        this._count++;
-        if (this._count <= this._life) {
-            this.x += this.vx;
-            this.vy -= 0.3;
-            this.y += this.vy;
-            // this.rotation += this.vr;
-            // 死にそうになったら点滅を開始
-            if (this._count >= this._life / 2) {
-                // this.alpha = 0.6 + Math.random() * 0.4;
-                // this.alpha = (1 - this._count / this._life);
-            }
-        }
-        else {
-            // 寿命が来たらフラグを立てる
-            this.isDead = true;
-        }
-    };
-    return Particle;
-}());
-exports.default = Particle;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SVGNameSpace_1 = __webpack_require__(1);
-var Particle_1 = __webpack_require__(5);
+var Particle_1 = __webpack_require__(8);
 var Point_1 = __webpack_require__(2);
 /**
  * パーティクル発生装置
  */
-var ParticleEmitter = (function () {
+var ParticleEmitter = /** @class */ (function () {
     function ParticleEmitter(svgElement) {
         // アニメーション中のパーティクルを格納する配列
         this._animationParticles = [];
@@ -435,6 +343,98 @@ var ParticleEmitter = (function () {
     return ParticleEmitter;
 }());
 exports.default = ParticleEmitter;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SVGNameSpace_1 = __webpack_require__(1);
+/**
+ * パーティクルのクラス
+ */
+var Particle = /** @class */ (function () {
+    function Particle() {
+        this.view = document.createElementNS(SVGNameSpace_1.SVGNameSpace.SVG, "use");
+        this.view.setAttributeNS(SVGNameSpace_1.SVGNameSpace.LINK, "href", "#myCircle");
+    }
+    Object.defineProperty(Particle.prototype, "x", {
+        get: function () {
+            return this._x;
+        },
+        set: function (value) {
+            this._x = value;
+            if (this.view) {
+                this.view.setAttribute("x", String(this._x));
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Particle.prototype, "y", {
+        get: function () {
+            return this._y;
+        },
+        set: function (value) {
+            this._y = value;
+            if (this.view) {
+                this.view.setAttribute("y", String(this._y));
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /*
+     * パーティクルの初期化
+     * @param parentVX, parentVY :親コンテナの速度。パーティクルの速度に影響を与える。
+     * */
+    Particle.prototype.init = function (emitX, emitY, parentVX, parentVY) {
+        this.x = emitX;
+        this.y = emitY;
+        this._life = 100 + Math.random() * 30;
+        this._count = 0;
+        this.vx = parentVX + (Math.random() - 0.5) * 4;
+        this.vy = parentVY + 1 + Math.random() * 2;
+        this.vr = (Math.random() - 0.5) * 5;
+        this.isDead = false;
+        // this.rotation = 50 * Math.PI * (Math.random() - 0.5);
+    };
+    Particle.prototype.setPosition = function (positionX, positionY) {
+        if (!this.view) {
+            return;
+        }
+        this.view.setAttribute("_y", String(positionY));
+    };
+    /*
+     * パーティクルの時間経過処理。
+     * _countがパーティクルの年齢。
+     * _lifeを超えたら死亡する。
+     *
+     * */
+    Particle.prototype.update = function () {
+        this._count++;
+        if (this._count <= this._life) {
+            this.x += this.vx;
+            this.vy -= 0.3;
+            this.y += this.vy;
+            // this.rotation += this.vr;
+            // 死にそうになったら点滅を開始
+            if (this._count >= this._life / 2) {
+                // this.alpha = 0.6 + Math.random() * 0.4;
+                // this.alpha = (1 - this._count / this._life);
+            }
+        }
+        else {
+            // 寿命が来たらフラグを立てる
+            this.isDead = true;
+        }
+    };
+    return Particle;
+}());
+exports.default = Particle;
 
 
 /***/ })
